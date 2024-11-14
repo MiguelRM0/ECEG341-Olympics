@@ -8,7 +8,7 @@ print("Hello World")
 # import time
 
 
-
+print("hello")
 
 # M2A = machine.Pin(10)
 # M2B = machine.Pin(11)
