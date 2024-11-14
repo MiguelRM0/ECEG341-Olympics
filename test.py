@@ -16,7 +16,7 @@ print("hello")
 # M1A = machine.PWM(machine.Pin(8),freq = 50, duty_u16 = 65535)
 # M1B = machine.PWM(machine.Pin(9), freq = 50, duty_u16 = 0)
 # M2A = machine.PWM(machine.Pin(10), freq = 50, duty_u16 = 65535)
-# M2B = machine.PWN(machine.pin(11), freq = 50, duty_u16 = 0)
+# M2B = machine.PWM(machine.Pin(11), freq = 50, duty_u16 = 0)
 
 
 # M1A 
