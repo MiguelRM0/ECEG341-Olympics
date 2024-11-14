@@ -1,5 +1,7 @@
 print("Hello World")
 
+print("Hello World")
+
 
 
 # import machine
