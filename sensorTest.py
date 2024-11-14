@@ -1,19 +1,20 @@
 import machine
 import time
 
-# sensor1 = machine.Pin(4,mode = machine.Pin.IN)
+sensor1 = machine.Pin(4)
+print(sensor1.value())
 
 
-# doubleSensor1 = machine.Pin(2,mode = machine.Pin.OUT)
-# doubleSensor2 = machine.Pin(3,mode = machine.Pin.OUT)
+doubleSensor1 = machine.Pin(2)
+doubleSensor2 = machine.Pin(3)
 
 # sensor1.on()
 # doubleSensor2.on()
 # doubleSensor1.on()
 
 
-# print(doubleSensor1.value())
-# print(doubleSensor2.value())
+print(doubleSensor1.value())
+print(doubleSensor2.value())
 # print(sensor1.value())
 
 
@@ -41,4 +42,5 @@ def HCSRSensor(trigger_pin, echo_pin, ):
     print(cms)
 
 
-HCSRSensor(17,16)
+while True:
+    HCSRSensor(17,16)
