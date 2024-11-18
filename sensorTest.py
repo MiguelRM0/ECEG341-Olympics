@@ -1,21 +1,24 @@
 import machine
 import time
-
+## Gives out 0 when on black surface and 1 if on white 
 sensor1 = machine.Pin(4)
 
 
-
-doubleSensor1 = machine.Pin(2, machine.Pin.IN)
-doubleSensor2 = machine.Pin(3, machine.Pin.IN)
+## Gives out 1 when on black surface and 0 if on white 
+doubleSensor1 = machine.Pin(26, machine.Pin.IN)
+doubleSensor2 = machine.Pin(27, machine.Pin.IN)
 
 # sensor1.on()
 # doubleSensor2.on()
 # doubleSensor1.on()
 
-
+#Right sensor 
 print(doubleSensor1.value())
 print(doubleSensor2.value())
-print(sensor1.value())
+## Left sensor 
+
+
+
 # print(sensor1.value())
 
 

@@ -90,15 +90,15 @@ class bot:
         return distance
 
 
-bot = bot(trig_pin = 17, echo_pin = 16, M1A = 8, M1B = 9,M2A = 11,M2B = 10 )
+bot = bot(trig_pin = 16, echo_pin = 17, M1A = 8, M1B = 9,M2A = 11,M2B = 10 )
 
-bot.fwd()
-utime.sleep_ms(2000)
-bot.leftRotate()
-utime.sleep_ms(2000)
-bot.rightRotate()
-utime.sleep_ms(2000)
-bot.brake()
+# bot.fwd()
+# utime.sleep_ms(2000)
+# bot.leftRotate()
+# utime.sleep_ms(2000)
+# bot.rightRotate()
+# utime.sleep_ms(2000)
+# bot.brake()
 
-# while True:
-#     print(bot.read_distance())
+while True:
+    print(bot.read_distance())
