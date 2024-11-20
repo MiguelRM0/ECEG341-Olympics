@@ -102,7 +102,7 @@ class Bot:
 
 b = Bot(trig_pin = 16, echo_pin = 17, M1A = 8, M1B = 9,M2A = 11,M2B = 10 )
 
-b.fwd()
+# b.fwd()
 
 # state = 0
 # count = 0
@@ -177,13 +177,13 @@ b.fwd()
 #         time.sleep_ms(0)
 
 
-b.fwd()
-utime.sleep_ms(2000)
+# b.fwd()
+# utime.sleep_ms(2000)
 # bot.leftRotate()
 # utime.sleep_ms(2000)
 # bot.rightRotate()
 # utime.sleep_ms(2000)
-b.brake()
+# b.brake()
 
 # while True:
 #     print(bot.read_distance())
