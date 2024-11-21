@@ -41,12 +41,12 @@ def main():
             if start_time is not None:
                 print("Run Time:", time.ticks_diff(time.ticks_ms(), start_time))
                 start_time = None
-            if line == (1, 1):
+            if line == (0, 0):
                 print("Ready!")
                 state = 1
         elif state == 1:
             ind.toggle()
-            if line != (1,1):
+            if line != (0,0):
                 print("Not ready")
                 state = 0
             elif b.A.value() == 0:
@@ -62,7 +62,7 @@ def main():
                 print("Go")
                 state = 2
                 start_time = time.ticks_ms()
-                b.fwd(speed = 0.3)
+                b.fwd(speed = 1)
         elif state == 2:
             # on line, go forward until off the line.
             if line == (0,0):

@@ -32,17 +32,7 @@ class Bot:
         self.M2B.freq(50)
 
     def read_line(self):
-        left_value = None
-        right_value = None
-        if (self.left.value() == 0):
-            left_value = 1
-        else:
-            left_value = 0
-        if (self.right.value() == 0):
-            right_value = 1
-        else:
-            right_value = 0
-        return (left_value, right_value)
+        return self.left.value(), self.right.value()
             
     
     def turnright(self, amount_u16 = 0x2000):
@@ -158,10 +148,11 @@ class Bot:
         distance = (pulse_time * 0.0343) / 2
         return distance
     
-if __name__ == "__main__":
-    from curling import main  # Import the main function from followLine.py
-    asyncio.run(main())  # Call the main function
+# if __name__ == "__main__":
+#     from curling import main  # Import the main function from followLine.py
+#     asyncio.run(main())  # Call the main function
     
-# bot = Bot(trig_pin = 16, echo_pin = 17, M1A = 8, M1B = 9,M2A = 11,M2B = 10,left_sensor = 27, right_sensor =26,  A = 20, B = 21)
 
-# print(bot.read_distance())
+if __name__ == "__main__":
+    from lineFollow import main
+    main

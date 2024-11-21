@@ -30,9 +30,9 @@ async def main():
     bot = Bot(**conf)
     p = Pin(18)
     n = neopixel.NeoPixel(p,32)
-    n[0] = (255, 0, 0)  # Set the first LED to red
-    n[1] = (255, 0, 0)  # Set the second LED to red
-    n.write()
+    # n[0] = (255, 0, 0)  # Set the first LED to red
+    # n[1] = (255, 0, 0)  # Set the second LED to red
+    # n.write()
     while True:
         await asyncio.sleep_ms(100)
         loop = asyncio.get_event_loop()
