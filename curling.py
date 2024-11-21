@@ -3,7 +3,10 @@ from os import utime
 from machine import Pin
 from array import array
 from bot import *
+import neopixel
 
+p = machine.Pin.board.X8
+n = neopixel.NeoPixel(p,32)
 
 class mydistance:
     def __init__(self, echo, trigger, period_ms=100, buffer_size=10):  
@@ -37,16 +40,17 @@ def get_distance(timepassed):
 
 
 async def main():
-    LED = Pin(18, Pin.OUT)
     bot = bot(trig_pin = 17, echo_pin = 16, M1A = 8, M1B = 9,M2A = 11,M2B = 10 )
     while True:
         await asyncio.sleep_ms(100)
         distance_read = mydistance(Pin(16, Pin.IN),Pin(17, Pin.OUT))
         distance = get_distance(sum(distance_read.buffer) // len(distance_read.buffer))
         #needs to change based on the distance the wall will be from the target
-        distance_to_wall = 50
-        if (distance < distance_to_wall):
+        distance_to_wall = 45
+        if (distance <= distance_to_wall):
             bot.breaks()
-            LED.on()
+            for i in range(32):
+                n[i] = (i * 8, 0, 0)
+            n.write()
         else:
             bot.fwd(speed = .2)
