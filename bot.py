@@ -1,6 +1,7 @@
 import machine
 import utime
 import time
+import lineFollow
 class Bot:
     def __init__(self, **kwargs):
         # print(kwargs)
@@ -17,6 +18,9 @@ class Bot:
         self.right = machine.Pin(kwargs["right_sensor"], machine.Pin.IN)
 
 
+        self.A = machine.Pin(kwargs["A"], machine.Pin.IN)
+        self.B = machine.Pin(kwargs["B"], machine.Pin.IN)
+
         self.singleSensor = machine.Pin(4)
         # Setup DC Motor pins
         self.M1A = machine.PWM(machine.Pin(kwargs["M1A"]))
@@ -29,7 +33,18 @@ class Bot:
         self.M2B.freq(50)
 
     def read_line(self):
-        return self.left.value(), self.right.value()
+        left_value = None
+        right_value = None
+        if (self.left.value() == 0):
+            left_value = 1
+        else:
+            left_value = 0
+        if (self.right.value() == 0):
+            right_value = 1
+        else:
+            right_value = 0
+        return (left_value, right_value)
+            
     
     def turnright(self, amount_u16 = 0x2000):
         # turn left by increasing the speed of the right motor and decreasing the speed of the left motor
@@ -40,7 +55,7 @@ class Bot:
             self.M1A.duty_u16(min(0xffff,self.M1A.duty_u16() + amount_u16))
             self.M1B.duty_u16(0)
         else:
-            # forward
+            # forwardç
             self.M1A.duty_u16(self.M1A.duty_u16())     # Duty Cycle must be between 0 until 65535
             self.M1B.duty_u16(max(0,self.M1B.duty_u16() - amount_u16))
 
@@ -96,6 +111,13 @@ class Bot:
         self.M2A.duty_u16(65535)
         self.M2B.duty_u16(65535)
 
+    def stop(self):
+        self.M1A.duty_u16(0)     # Duty Cycle must be between 0 until 65535
+        self.M1B.duty_u16(0)
+        self.M2A.duty_u16(0)
+        self.M2B.duty_u16(0)
+
+
     def read_distance(self, timeout=100):
         """Reads distance from an HC-SR04P distance sensor.
         
@@ -136,6 +158,7 @@ class Bot:
         pulse_time = utime.ticks_diff(signalon, signaloff)
         distance = (pulse_time * 0.0343) / 2
         return distance
-
-
-b = Bot(trig_pin = 16, echo_pin = 17, M1A = 8, M1B = 9,M2A = 11,M2B = 10 , left_sensor = 27, right_sensor = 26)
+    
+if __name__ == "__main__":
+    from followLine import main  # Import the main function from followLine.py
+    main()

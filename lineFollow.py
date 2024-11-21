@@ -3,11 +3,6 @@ import time
 import machine
 
 def main():
-    global b
-    global state 
-    global count
-    global start_time
-    global ind
     conf ={
         "trig_pin" : 16,
         "echo_pin" : 17,
@@ -16,7 +11,9 @@ def main():
         "M2A": 11,
         "M2B": 10,
         "left_sensor": 27,
-        "right_sensor": 26
+        "right_sensor": 26,
+        "A": 20,
+        "B": 21
     }
     b = Bot(**conf)
 
@@ -31,6 +28,7 @@ def main():
         # state machine, wait for the line to be detected, then button press.
         # then go straight until either sensor is 1.
         line = b.read_line()
+        print(line)
 
         if start_time is not None and time.ticks_diff(time.ticks_ms(), start_time) > 30000:
             print("Timeout")
@@ -64,10 +62,9 @@ def main():
                 print("Go")
                 state = 2
                 start_time = time.ticks_ms()
-                b.fwd(speed=0.5)
+                b.fwd(speed = 0.3)
         elif state == 2:
             # on line, go forward until off the line.
-
             if line == (0,0):
                 state = 3
         elif state == 3:
@@ -105,7 +102,9 @@ except Exception as e:
         "M2A": 11,
         "M2B": 10,
         "left_sensor": 27,
-        "right_sensor": 26
+        "right_sensor": 26,
+        "A": 20,
+        "B": 21
     }
     b = Bot(**conf)
     b.stop()
