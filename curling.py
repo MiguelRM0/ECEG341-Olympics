@@ -43,11 +43,13 @@ def get_distance(timepassed):
 
 
 async def main():
-    bot = bot(trig_pin = 17, echo_pin = 16, M1A = 8, M1B = 9,M2A = 11,M2B = 10 )
+    bot = Bot(trig_pin = 17, echo_pin = 16, M1A = 8, M1B = 9,M2A = 11,M2B = 10, A = 20, B = 21)
     while True:
         await asyncio.sleep_ms(100)
+        loop = asyncio.get_event_loop()
         distance_read = mydistance(Pin(16, Pin.IN),Pin(17, Pin.OUT))
         distance = get_distance(sum(distance_read.buffer) // len(distance_read.buffer))
+        loop.create_task(distance_read.task())
         #needs to change based on the distance the wall will be from the target
         distance_to_wall = 45
         if (distance <= distance_to_wall):
