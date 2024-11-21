@@ -1,7 +1,6 @@
 import machine
 import utime
-import time
-import lineFollow
+import asyncio
 class Bot:
     def __init__(self, **kwargs):
         # print(kwargs)
@@ -160,5 +159,9 @@ class Bot:
         return distance
     
 if __name__ == "__main__":
-    from followLine import main  # Import the main function from followLine.py
-    main()
+    from curling import main  # Import the main function from followLine.py
+    asyncio.run(main())  # Call the main function
+    
+# bot = Bot(trig_pin = 16, echo_pin = 17, M1A = 8, M1B = 9,M2A = 11,M2B = 10,left_sensor = 27, right_sensor =26,  A = 20, B = 21)
+
+# print(bot.read_distance())
