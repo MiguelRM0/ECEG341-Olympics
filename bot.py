@@ -9,9 +9,13 @@ class Bot:
         self.echo = machine.Pin(kwargs["echo_pin"], machine.Pin.IN)
         
         #Gives value of left sensor 
-        self.left = machine.Pin(27, machine.Pin.IN)
-        self.right = machine.Pin(26, machine.Pin.IN)
+        # self.left = machine.Pin(27, machine.Pin.IN)
+        # self.right = machine.Pin(26, machine.Pin.IN)
         #Gives value of right sensor 
+
+        self.left = machine.Pin(kwargs["left_sensor"], machine.Pin.IN)
+        self.right = machine.Pin(kwargs["right_sensor"], machine.Pin.IN)
+
 
         self.singleSensor = machine.Pin(4)
         # Setup DC Motor pins
@@ -26,6 +30,40 @@ class Bot:
 
     def read_line(self):
         return self.left.value(), self.right.value()
+    
+    def turnright(self, amount_u16 = 0x2000):
+        # turn left by increasing the speed of the right motor and decreasing the speed of the left motor
+        # assumes we are going forward.
+
+        if self.M1B.duty_u16() == 0:
+            # reverse
+            self.M1A.duty_u16(min(0xffff,self.M1A.duty_u16() + amount_u16))
+            self.M1B.duty_u16(0)
+        else:
+            # forward
+            self.M1A.duty_u16(self.M1A.duty_u16())     # Duty Cycle must be between 0 until 65535
+            self.M1B.duty_u16(max(0,self.M1B.duty_u16() - amount_u16))
+
+        self.M2A.duty_u16(self.M2A.duty_u16())
+        self.M2B.duty_u16(self.M2B.duty_u16())
+
+
+
+    def turnleft(self, amount_u16 = 0x2000):
+        # turn left by increasing the speed of the right motor and decreasing the speed of the left motor
+        # assumes we are going forward.
+        self.M1A.duty_u16(self.M1A.duty_u16())     # Duty Cycle must be between 0 until 65535
+        self.M1B.duty_u16(self.M1B.duty_u16())
+
+        if self.M2B.duty_u16() == 0:
+            # reverse
+            self.M2A.duty_u16(min(0xffff,self.M2A.duty_u16() + amount_u16))
+            self.M2B.duty_u16(0)
+        else:
+            # forward
+            self.M2A.duty_u16(self.M2A.duty_u16())
+            self.M2B.duty_u16(max(0,self.M2B.duty_u16() - amount_u16))
+
 
 
     def leftRotate(self, speed = 0.3):
@@ -100,99 +138,4 @@ class Bot:
         return distance
 
 
-b = Bot(trig_pin = 16, echo_pin = 17, M1A = 8, M1B = 9,M2A = 11,M2B = 10 )
-
-# b.fwd()
-
-# state = 0
-# count = 0
-# start_time = None
-
-
-# while True:
-#         # state machine, wait for the line to be detected, then button press.
-#         # then go straight until either sensor is 1.
-#         line = b.read_line()
-
-#         if start_time is not None and time.ticks_diff(time.ticks_ms(), start_time) > 30000:
-#             print("Timeout")
-#             b.stop()
-#             state = 0
-#             start_time = None
-#             continue
-    
-#         if state == 0:
-#             if start_time is not None:
-#                 print("Run Time:", time.ticks_diff(time.ticks_ms(), start_time))
-#                 start_time = None
-#             if line == (1, 1):
-#                 print("Ready!")
-#                 state = 1
-#         elif state == 1:
-#             ind.toggle()
-#             if line != (1,1):
-#                 print("Not ready")
-#                 state = 0
-#             elif b.A.value() == 0:
-#                 while b.A.value() == 0:
-#                     time.sleep_ms(10)
-#                 count = 0
-#                 print("Start 3", end = "")
-#                 time.sleep(1)
-#                 print("2", end = "")
-#                 time.sleep(1)
-#                 print("1", end = "")
-#                 time.sleep(1)
-#                 print("Go")
-#                 state = 2
-#                 start_time = time.ticks_ms()
-#                 b.fwd(speed=0.5)
-#         elif state == 2:
-#             # on line, go forward until off the line.
-
-#             if line == (0,0):
-#                 state = 3
-#         elif state == 3:
-#             # go forward until we see the line again.
-#             # steer if one sensor is on the line.
-#             if line == (1,1):
-#                 count += 1
-#                 if count == 7:
-#                     b.stop()
-#                     state = 0
-#                 else:
-#                     state = 2
-#             elif line == (1,0):
-#                 # steer left
-#                 print("LEFT")
-#                 b.turnleft(amount_u16=512)
-#             elif line == (0,1):
-#                 # steer right
-#                 print("RIGHT")
-#                 b.turnright(amount_u16=512)
-#             else:
-#                 b.fwd()
-#         else:
-#             raise(Exception(f"Invalid state ({state})"))
-#         time.sleep_ms(0)
-
-
-# b.fwd()
-# utime.sleep_ms(2000)
-# bot.leftRotate()
-# utime.sleep_ms(2000)
-# bot.rightRotate()
-# utime.sleep_ms(2000)
-# b.brake()
-
-# while True:
-#     print(bot.read_distance())
-
-# while bot.singleSensor.value() == 0 and bot.doubleSensor1.value() == 0 and bot.doubleSensor2.value() == 0:
-#     bot.fwd()
-# while bot.singleSensor.value() == 0 and bot.doubleSensor1.value() == 1 or bot.doubleSensor2.value() == 1:
-#     bot.leftRotate()
-# while bot.singleSensor.value() == 0 and bot.doubleSensor1.value() == 0 and bot.doubleSensor2.value() == 0:
-#     bot.fwd()
-
-# bot.brake()
+b = Bot(trig_pin = 16, echo_pin = 17, M1A = 8, M1B = 9,M2A = 11,M2B = 10 , left_sensor = 27, right_sensor = 26)
