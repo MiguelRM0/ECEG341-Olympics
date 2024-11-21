@@ -90,7 +90,7 @@ class Bot:
         self.M2A.duty_u16(int(speed * 65535))
         self.M2B.duty_u16(0)
 
-    def brake(self):
+    def brakes(self):
         self.M1A.duty_u16(65535)     # Duty Cycle must be between 0 until 65535
         self.M1B.duty_u16(65535)
         self.M2A.duty_u16(65535)
