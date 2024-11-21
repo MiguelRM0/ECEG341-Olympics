@@ -5,8 +5,11 @@ from array import array
 from bot import *
 import neopixel
 
-p = machine.Pin.board.X8
+p = machine.Pin(18)
 n = neopixel.NeoPixel(p,32)
+n[0] = (255, 0, 0)  # Set the first LED to red
+n[1] = (255, 0, 0)  # Set the second LED to green
+
 
 class mydistance:
     def __init__(self, echo, trigger, period_ms=100, buffer_size=10):  
@@ -49,8 +52,8 @@ async def main():
         distance_to_wall = 45
         if (distance <= distance_to_wall):
             bot.breaks()
-            for i in range(32):
-                n[i] = (i * 8, 0, 0)
-            n.write()
+            for i in range(2):
+                n[i] = (0, 255, 0)
+                n.write()
         else:
             bot.fwd(speed = .2)
