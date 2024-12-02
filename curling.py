@@ -8,7 +8,8 @@ import neopixel
 p = machine.Pin(18)
 n = neopixel.NeoPixel(p,32)
 n[0] = (255, 0, 0)  # Set the first LED to red
-n[1] = (255, 0, 0)  # Set the second LED to green
+n[1] = (255, 0, 0)  # Set the second LED to red
+n.write()
 
 
 class mydistance:
