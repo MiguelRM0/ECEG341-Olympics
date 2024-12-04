@@ -1,8 +1,7 @@
 import asyncio
-from os import utime
 from machine import Pin
 from array import array
-from bot import *
+from main import Bot
 
 
 # class mydistance:
@@ -53,8 +52,12 @@ async def main():
     while True:
         await asyncio.sleep_ms(100)
         distance = bot.read_distance()
+        print(distance)
         if (distance < 75):
-            bot.breaks()
+            bot.brakes()
         else:
             bot.fwd(speed = .9)
+
+
+asyncio.run(main())
             

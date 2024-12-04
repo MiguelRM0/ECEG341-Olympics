@@ -153,8 +153,12 @@ class Bot:
 # asyncio.run(curling.main())  # Call the main function
     
 # if __name__== "__main__":
+#     from meterDash import main 
+#     asyncio.run(main)
+
+# if __name__== "__main__":
 #     from curling import main
+#     asyncio.run(main())
+# if __name__ == "__main__":
+#     from lineFollow import main
 #     main
-if __name__ == "__main__":
-    from lineFollow import main
-    main

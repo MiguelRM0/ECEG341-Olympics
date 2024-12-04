@@ -47,4 +47,3 @@ async def main():
             bot.fwd()
 
 
-asyncio.run(main())
