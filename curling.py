@@ -5,6 +5,14 @@ from array import array
 from main import Bot
 import neopixel
 
+
+# class mydistance:
+#     def __init__(self, echo, trigger, period_ms=100, buffer_size=10):  
+#         self.echo = echo
+#         self.trigger = trigger
+#         self.buffer = array('I', [0] * buffer_size)
+#         self.idx = 0
+#         self.period_ms = period_ms
 async def main():
     global bot
     conf ={
