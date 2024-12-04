@@ -1,6 +1,7 @@
 from main import Bot
 import time
 import machine
+import neopixel
 
 def main():
     conf ={
@@ -22,6 +23,7 @@ def main():
     state = 0
     count = 0
     start_time = None
+    n = neopixel.NeoPixel(machine.Pin(18),32)
 
 
     while True:
@@ -46,6 +48,9 @@ def main():
                 state = 1
         elif state == 1:
             ind.toggle()
+            n[0] = (255,0,0)
+            n[1] = (255,0,0)
+            n.write()
             if line != (0,0):
                 print("Not ready")
                 state = 0
@@ -62,12 +67,20 @@ def main():
                 print("Go")
                 state = 2
                 start_time = time.ticks_ms()
-                b.fwd(speed = 1)
+                b.fwd()
         elif state == 2:
+            n[0] = (0,255,0)
+            n[1] = (0,255,0)
+            n.write()
             # on line, go forward until off the line.
             if line == (0,0):
                 state = 3
+            
+            
         elif state == 3:
+            n[0] = (0,0,255)
+            n[1] = (0,0,255)
+            n.write()
             # go forward until we see the line again.
             # steer if one sensor is on the line.
             if line == (1,1):
