@@ -148,11 +148,17 @@ class Bot:
         distance = (pulse_time * 0.0343) / 2
         return distance
     
-# if __name__ == "__main__":
-#     from curling import main  # Import the main function from followLine.py
-#     asyncio.run(main())  # Call the main function
-    
 
-if __name__ == "__main__":
-    from lineFollow import main
-    main
+# import curling # Import the main function from followLine.py
+# asyncio.run(curling.main())  # Call the main function
+    
+# if __name__== "__main__":
+#     from meterDash import main 
+#     asyncio.run(main)
+
+# if __name__== "__main__":
+#     from curling import main
+#     asyncio.run(main())
+# if __name__ == "__main__":
+#     from lineFollow import main
+#     main
