@@ -1,5 +1,4 @@
-import asyncio
-import utime
+
 from machine import Pin
 from array import array
 from main import Bot
@@ -11,7 +10,7 @@ n[0] = (255, 0, 0)  # Set the first LED to red
 n[1] = (255, 0, 0)  # Set the second LED to green
 
 
-async def main():
+def main():
     global bot
     conf ={
         "trig_pin" : 16,
