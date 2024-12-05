@@ -28,6 +28,7 @@ def main():
         distance_to_wall = 45
 
         if distance is None:
+            bot.brakes()
             continue
 
 

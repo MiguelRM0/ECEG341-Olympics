@@ -23,6 +23,7 @@ def main():
         distance = bot.read_distance()
 
         if distance == None:
+            bot.brakes()
             continue
 
         
