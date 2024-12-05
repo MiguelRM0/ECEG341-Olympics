@@ -11,6 +11,7 @@ import random
 from main import Bot
 import utime
 from time import sleep_ms
+import neopixel
 
 buzzer = PWM(Pin(22))
 #notes that can be used
@@ -29,10 +30,10 @@ tones = {
 
 #Take on me by A-ha 
 take_on_me = [
-    "E5", "G5", "A5", "A5", "A5", "E5", "G5", "A5", "P", "E5", "G5", "A5", "A5", "A5", "G5",
-    "P", "E5", "G5", "A5", "A5", "A5", "E5", "G5", "A5", "P", "E5", "G5", "A5", "P", "E5", "G5", "A5",
-    "E5", "G5", "A5", "A5", "A5", "G5", "P", "E5", "G5", "A5", "P", "E5", "G5", "A5", "A5", "A5", "G5",
-    "P", "A5", "G5", "E5", "G5", "A5", "A5", "A5", "G5"
+    "E5", "E5", "E5", "P", "E5", "G5", "A5", "A5", "A5", "E5", "G5", "A5", "P",
+    "E5", "G5", "A5", "A5", "A5", "G5", "P", "E5", "G5", "A5", "P", "E5", "G5", "A5",
+    "E5", "G5", "A5", "A5", "A5", "G5", "P", "E5", "G5", "A5", "P", "E5", "G5", "A5",
+    "A5", "A5", "G5", "P", "A5", "G5", "E5", "G5", "A5", "A5", "A5", "G5"
 ]
 
 def playtone(frequency):
@@ -52,50 +53,49 @@ def playsong(mysong):
     bequiet()
 
 
-#fades in the LED using async
-async def fade_led(pin, period_ms):
-    led_pwm = PWM(pin, 1000)
+global bot
+conf ={
+    "trig_pin" : 16,
+    "echo_pin" : 17,
+    "M1A": 8,
+    "M1B": 9,
+    "M2A": 11,
+    "M2B": 10,
+    "left_sensor": 27,
+    "right_sensor": 26,
+    "A": 20,
+    "B": 21
+}
+bot = Bot(**conf)
 
-    while True:
-        for duty_cycle in range(0, 65536, 256):  # Adjust step size for speed
-            led_pwm.duty_u16(duty_cycle)
-            await asyncio.sleep_ms(period_ms >> 9)
-
-        #256 steps
-        for duty_cycle in range(65535, 0, -256):
-            led_pwm.duty_u16(duty_cycle)
-            await asyncio.sleep_ms(period_ms >> 9)
-    
-
-
-
-
-bot = Bot(trig_pin = 17, echo_pin = 16, M1A = 8, M1B = 9,M2A = 11,M2B = 10)
-doubleSensor1 = Pin(26, Pin.IN)
-doubleSensor2 = Pin(27, Pin.IN)
+p = Pin(18)
+n = neopixel.NeoPixel(p,32)
 
 def get_type_ground1():
-    if doubleSensor1.value() == 0:
+    if bot.right_sensor.value() == 0:
         return 0
     else:
         return 1
     
 def get_type_ground2():
-    if doubleSensor2.value() == 0:
+    if bot.left_sensor.value() == 0:
         return 0
     else:
         return 1
     
 async def check_border():
     while True:
-        if (get_type_ground1() == 0 and get_type_ground2() == 0):
+        if (get_type_ground1() == 1 and get_type_ground2() == 1):
             await adjust_position()
         await asyncio.sleep_ms(100)
 
 async def movement():
-    bot.fwd()
+    bot.fwd(speed = .5)
+    check_border()
+    await asyncio.sleep_ms(100)
 
 async def adjust_position():
+    #if the bot is too close to the edge it should then reverse and rotate left to face a new direction
     bot.reverse()
     await asyncio.sleep_ms(1000)
     bot.leftRotate()
@@ -105,11 +105,19 @@ async def adjust_position():
 
 async def main():
     loop = asyncio.get_event_loop()
-    loop.create_task(fade_led(Pin(2, Pin.OUT), 10240))
-    loop.create_task(fade_led(Pin(3, Pin.OUT), 10240))
     loop.create_task(check_border())
+    #plays the song
     playsong(take_on_me)
+    #cycles the lights on the board
+    for i in range(4 * len(n)):
+        for j in range(len(n)):
+            n[j] = (0, 0, 0)
+        n[i % n] = (255, 255, 255)
+        n.write()
+        time.sleep_ms(25)
+
     while True:
+
         await movement()
         await asyncio.sleep_ms(100)
 
