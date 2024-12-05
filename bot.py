@@ -1,6 +1,5 @@
 import machine
 import utime
-import asyncio
 class Bot:
     def __init__(self, **kwargs):
         # print(kwargs)
@@ -158,7 +157,7 @@ class Bot:
 
 # if __name__== "__main__":
 #     from curling import main
-#     asyncio.run(main())
+#     main()
 # if __name__ == "__main__":
 #     from lineFollow import main
 #     main
