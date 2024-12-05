@@ -21,9 +21,14 @@ def main():
     bot = Bot(**conf)
     while True:
         distance = bot.read_distance()
-        print(distance)
+
+        if distance == None:
+            continue
+
+        
         if (distance < 75):
             bot.brakes()
         else:
             bot.fwd(speed = .9)
             
+main()
