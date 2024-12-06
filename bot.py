@@ -158,6 +158,8 @@ class Bot:
 # if __name__== "__main__":
 #     from curling import main
 #     main()
-# if __name__ == "__main__":
-#     from lineFollow import main
-#     main
+    
+if __name__== "__main__":
+    from lineFollow import main
+    main()
+
