@@ -100,8 +100,6 @@ async def movement():
     time2 = random.randint(200, 3000) 
     await asyncio.sleep_ms(time2)
     
-
-
 async def adjust_position():
     #if the bot is too close to the edge it should then reverse and rotate left to face a new direction
     bot.reverse()

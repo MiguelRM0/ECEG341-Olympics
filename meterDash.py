@@ -8,7 +8,7 @@ from lineFollow import line_follow
 async def dash(bot):
     while True:
         distance = await asyncio.to_thread(bot.read_distance)
-        if distance == None:
+        if distance is None:
             bot.brakes()
             continue
         if (distance < 20):
@@ -36,9 +36,8 @@ async def main():
     count = 0
     start_time = None
     n = neopixel.NeoPixel(machine.Pin(18),32)
-    loop = asyncio.get_event_loop()
-    loop.create_task(dash(bot))
-    loop.create_task(asyncio.to_thread(line_follow, state, count, start_time, n))
-    await asyncio.gather()
+    task1 = asyncio.create_task(dash(bot))
+    task2 = asyncio.create_task(asyncio.to_thread(line_follow, state, count, start_time, n))
+    await asyncio.gather(task1,task2)
             
 asyncio.run(main())
