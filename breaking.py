@@ -49,7 +49,7 @@ def playsong(mysong):
             bequiet()
         else:
             playtone(tones[mysong[i]])
-        sleep_ms(225)
+        asyncio.sleep(0.225)
     bequiet()
 
 
@@ -83,41 +83,50 @@ def get_type_ground2():
     else:
         return 1
     
+#checks to make sure the bot hasn't detected the border
 async def check_border():
     while True:
-        if (get_type_ground1() == 1 and get_type_ground2() == 1):
+        if (get_type_ground1() == 1 or get_type_ground2() == 1):
             await adjust_position()
         await asyncio.sleep_ms(100)
 
 async def movement():
     bot.fwd(speed = .5)
-    check_border()
     await asyncio.sleep_ms(100)
+    bot.rightRotate(speed = .5)
+    time = random.randint(200, 3000) 
+    await asyncio.sleep_ms(time)
+    bot.leftRotate(speed = .7)
+    time2 = random.randint(200, 3000) 
+    await asyncio.sleep_ms(time2)
+    
+
 
 async def adjust_position():
     #if the bot is too close to the edge it should then reverse and rotate left to face a new direction
     bot.reverse()
     await asyncio.sleep_ms(1000)
     bot.leftRotate()
-    time = random.randint(200, 3000)
+    time = random.randint(200, 3000) 
     await asyncio.sleep_ms(time)
 
-
-async def main():
-    loop = asyncio.get_event_loop()
-    loop.create_task(check_border())
-    #plays the song
-    playsong(take_on_me)
-    #cycles the lights on the board
+async def light_show():
     for i in range(4 * len(n)):
         for j in range(len(n)):
             n[j] = (0, 0, 0)
         n[i % n] = (255, 255, 255)
         n.write()
-        time.sleep_ms(25)
+        await asyncio.sleep_ms(25)
 
-    while True:
+async def main():
+    asyncio.create_task(check_border())
+    asyncio.create_task(light_show())
+    #plays the song
+    playsong(take_on_me)
+    #cycles the lights on the board
 
+    start_time = time.ticks_ms()
+    while time.ticks_diff(time.ticks_ms(), start_time) < 30000:
         await movement()
         await asyncio.sleep_ms(100)
 
