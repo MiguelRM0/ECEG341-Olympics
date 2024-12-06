@@ -1,5 +1,11 @@
 import machine
 import utime
+import time
+
+import asyncio
+# from meterDash import meterDash
+
+
 class Bot:
     def __init__(self, **kwargs):
         # print(kwargs)
@@ -159,7 +165,31 @@ class Bot:
 #     from curling import main
 #     main()
     
-if __name__== "__main__":
-    from lineFollow import main
-    main()
+# if __name__== "__main__":
+#     from lineFollow import main
+#     main()
 
+
+# async def main():
+#     await meterDash
+
+# if __name__ == "__main__":
+#     asyncio.run(main())
+    
+# conf ={
+#         "trig_pin" : 16,
+#         "echo_pin" : 17,
+#         "M1A": 8,
+#         "M1B": 9,
+#         "M2A": 11,
+#         "M2B": 10,
+#         "left_sensor": 27,
+#         "right_sensor": 26,
+#         "A": 20,
+#         "B": 21
+#     }
+# bot = Bot(**conf)
+
+# bot.fwd()
+# time.sleep_ms(1000)
+# bot.brakes()

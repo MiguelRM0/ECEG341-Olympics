@@ -31,7 +31,6 @@ def line_follow(b, ind, state, count, start_time, n):
         # state machine, wait for the line to be detected, then button press.
         # then go straight until either sensor is 1.
         line = b.read_line()
-        print(line)
 
         if start_time is not None and time.ticks_diff(time.ticks_ms(), start_time) > 100000000000:
             b.stop()

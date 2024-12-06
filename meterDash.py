@@ -1,9 +1,8 @@
-import asyncio
-from machine import Pin
-from array import array
 from main import Bot
+from machine import Pin
 import neopixel
 from lineFollow import line_follow
+import asyncio
 
 async def dash(bot):
     while True:
@@ -18,7 +17,7 @@ async def dash(bot):
             bot.fwd(speed = .9)
             await asyncio.sleep_ms(100)
 
-async def main():
+async def meterDash():
     conf ={
         "trig_pin" : 16,
         "echo_pin" : 17,
@@ -35,10 +34,10 @@ async def main():
     state = 0
     count = 0
     start_time = None
-    n = neopixel.NeoPixel(machine.Pin(18),32)
+    n = neopixel.NeoPixel(Pin(18),32)
     loop = asyncio.get_event_loop()
     loop.create_task(dash(bot))
     loop.create_task(asyncio.to_thread(line_follow, state, count, start_time, n))
     await asyncio.gather()
             
-asyncio.run(main())
+# asyncio.run(meterDash())
