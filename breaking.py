@@ -109,12 +109,14 @@ async def adjust_position():
     await asyncio.sleep_ms(time)
 
 async def light_show():
-    for i in range(4 * len(n)):
-        for j in range(len(n)):
-            n[j] = (0, 0, 0)
-        n[i % n] = (255, 255, 255)
+    while True:
+        rand1 = random.randint(0, 255)
+        rand2 = random.randint(0, 255)
+        rand3 = random.randint(0, 255)
+        n[0] = (rand1, rand2, rand3)
+        n[1] = (rand3, rand2, rand1)
         n.write()
-        await asyncio.sleep_ms(25)
+        await asyncio.sleep_ms(1000)
 
 async def main():
     asyncio.create_task(check_border())
