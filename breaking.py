@@ -8,7 +8,7 @@ import asyncio
 from machine import Pin,PWM
 import time
 import random
-from main import Bot
+from bot import Bot
 import utime
 from time import sleep_ms
 import neopixel
@@ -43,13 +43,13 @@ def playtone(frequency):
 def bequiet():
     buzzer.duty_u16(0)
 
-def playsong(mysong):
+async def playsong(mysong):
     for i in range(len(mysong)):
         if (mysong[i] == "P" or mysong[i] == 0 ):
             bequiet()
         else:
             playtone(tones[mysong[i]])
-        asyncio.sleep(0.225)
+        await asyncio.sleep_ms(225)
     bequiet()
 
 
@@ -72,40 +72,46 @@ p = Pin(18)
 n = neopixel.NeoPixel(p,32)
 
 def get_type_ground1():
-    if bot.right_sensor.value() == 0:
+    if bot.right.value() == 0:
         return 0
     else:
         return 1
     
 def get_type_ground2():
-    if bot.left_sensor.value() == 0:
+    if bot.left.value() == 0:
         return 0
     else:
         return 1
     
 #checks to make sure the bot hasn't detected the border
 async def check_border():
+    print("in check_border")
     while True:
         if (get_type_ground1() == 1 or get_type_ground2() == 1):
             await adjust_position()
         await asyncio.sleep_ms(100)
 
 async def movement():
+    # print("in movement")
     bot.fwd(speed = .5)
     await asyncio.sleep_ms(100)
-    bot.rightRotate(speed = .5)
+    bot.rightRotate(speed =.3)
     time = random.randint(200, 3000) 
+    # print(time)
     await asyncio.sleep_ms(time)
-    bot.leftRotate(speed = .7)
+    bot.leftRotate(speed = .5)
     time2 = random.randint(200, 3000) 
+    # print(time2)
     await asyncio.sleep_ms(time2)
     
 async def adjust_position():
+    # print("in adjust position")
     #if the bot is too close to the edge it should then reverse and rotate left to face a new direction
     bot.reverse()
     await asyncio.sleep_ms(1000)
     bot.leftRotate()
     time = random.randint(200, 3000) 
+    # print(time)
     await asyncio.sleep_ms(time)
 
 async def light_show():
@@ -118,16 +124,19 @@ async def light_show():
         n.write()
         await asyncio.sleep_ms(1000)
 
-async def main():
+async def main_function():
     asyncio.create_task(check_border())
     asyncio.create_task(light_show())
+    asyncio.create_task(playsong(take_on_me)) 
     #plays the song
-    playsong(take_on_me)
+    
     #cycles the lights on the board
 
     start_time = time.ticks_ms()
     while time.ticks_diff(time.ticks_ms(), start_time) < 30000:
+        # playsong(take_on_me)
         await movement()
         await asyncio.sleep_ms(100)
+    bot.stop()
 
-asyncio.run(main())
+asyncio.run(main_function())

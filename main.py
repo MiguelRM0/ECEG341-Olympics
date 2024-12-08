@@ -1,7 +1,9 @@
 import asyncio
 # from meterDash import meterDash
 
-from curling import curling 
+# from curling import curling 
+
+from breaking import main_function
 
 # # Entry point for the system
 # if __name__ == "__main__":
@@ -9,5 +11,8 @@ from curling import curling
 #     asyncio.run(meterDash())
 
 
+# if __name__ == "__main__":
+#     asyncio.run(curling())
+
 if __name__ == "__main__":
-    asyncio.run(curling())
+    asyncio.run(main_function())
