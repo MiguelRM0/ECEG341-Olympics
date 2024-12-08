@@ -1,29 +1,30 @@
 import asyncio
 from machine import Pin
 from array import array
-from main import Bot
+from bot import Bot
 import neopixel
 from lineFollow import line_follow
 
-async def curling(bot, n):
+async def curling_logic(bot, n, task2):
     while True:
-        distance = bot.read_distance()
+        distance = await bot.read_distance()
         distance_to_wall = 45
         if distance is None:
             bot.brakes()
             continue
         if  (distance <= distance_to_wall):
-            bot.brakes()
+            bot.stop()
             for i in range(2):
                 n[i] = (0, 255, 0)
                 n.write()
+            task2.cancel()
         else:
             n[0] = (255, 0, 0)  # Set the first LED to red
             n[1] = (255, 0, 0)  # Set the second LED to red
             n.write()
-            bot.fwd()
+        await asyncio.sleep(0.01)
 
-async def main():
+async def curling():
     conf ={
         "trig_pin" : 16,
         "echo_pin" : 17,
@@ -40,7 +41,12 @@ async def main():
     state = 0
     count = 0
     start_time = None
-    n = neopixel.NeoPixel(machine.Pin(18),32)
-    task1 = asyncio.create_task(curling(bot, n))
-    task2 = asyncio.create_task(asyncio.to_thread(line_follow, state, count, start_time, n))
+    n = neopixel.NeoPixel(Pin(18),32)
+    ind = Pin(0, Pin.OUT)
+    task2 = asyncio.create_task(line_follow(bot, ind , state, count ,start_time, n, speed = 0.9))
+    task1 = asyncio.create_task(curling_logic(bot, n, task2))
     await asyncio.gather(task1,task2)
+
+
+
+asyncio.run(curling())

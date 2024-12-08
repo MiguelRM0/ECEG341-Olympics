@@ -5,7 +5,7 @@ from lineFollow import line_follow
 import asyncio
 import sys
 
-async def dash(bot):
+async def dash(bot, task2):
     # print("In dash function")
     while True:
         distance = await bot.read_distance()
@@ -16,7 +16,7 @@ async def dash(bot):
         if (distance < 15):
             # print("Obstacle detected. Stopping bot.")
             bot.stop()
-            sys.exit()
+            task2.cancel()
         await asyncio.sleep(0.01)
 
 async def meterDash():
@@ -39,8 +39,8 @@ async def meterDash():
     ind = Pin(0, Pin.OUT)
     n = neopixel.NeoPixel(Pin(18),32)
     # print("In meter Dash")
-    task1 = asyncio.create_task(dash(bot))
     task2 = asyncio.create_task(line_follow(bot , ind , state, count, start_time, n, speed = 0.6))
+    task1 = asyncio.create_task(dash(bot , task2))
     await asyncio.gather(task1,task2)
             
 asyncio.run(meterDash())
