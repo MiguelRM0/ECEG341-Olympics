@@ -112,7 +112,7 @@ class Bot:
         self.M2B.duty_u16(0)
 
 
-    def read_distance(self, timeout=100):
+    async def read_distance(self, timeout=100):
         """Reads distance from an HC-SR04P distance sensor.
         
         2cm - 400cm range
@@ -130,28 +130,28 @@ class Bot:
 
         # Trigger the sensor
         self.trig.value(0)
-        utime.sleep_us(2)
+        await asyncio.sleep(0.000002)
         self.trig.value(1)
-        utime.sleep_us(10)
+        await asyncio.sleep(0.00001)
         self.trig.value(0)
 
         # Wait for the echo signal
-        start_time = utime.ticks_us()
+        start_time = time.ticks_ms()
         while self.echo.value() == 0:
-            signaloff = utime.ticks_us()
-            if utime.ticks_diff(signaloff, start_time) > timeout * 1000:
+            signaloff = time.ticks_ms()
+            if time.ticks_diff(signaloff, start_time) > timeout * 1000:
                 return None
 
-        start_time = utime.ticks_us()
+        start_time = time.ticks_ms()
         while self.echo.value() == 1:
-            signalon = utime.ticks_us()
-            if utime.ticks_diff(signalon, start_time) > timeout * 1000:
+            signalon = time.ticks_ms()
+            if time.ticks_diff(signalon, start_time) > timeout * 1000:
                 return None
 
         # Calculate the distance
-        pulse_time = utime.ticks_diff(signalon, signaloff)
+        pulse_time = time.ticks_diff(signalon, signaloff)
         distance = (pulse_time * 0.0343) / 2
-        return distance
+        return distance * 1000
     
 
 # import curling # Import the main function from followLine.py
@@ -168,7 +168,6 @@ class Bot:
 # if __name__== "__main__":
 #     from lineFollow import main
 #     main()
-
 
 # async def main():
 #     await meterDash
