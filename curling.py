@@ -1,3 +1,9 @@
+"""
+Curling portion of the ECEG341 Robot Olympics
+11/18/2024
+Mike Merola and Miguel Romero
+"""
+
 import asyncio
 from machine import Pin
 from array import array

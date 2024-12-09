@@ -1,3 +1,8 @@
+"""
+Meter Dash portion of the ECEG341 Robot Olympics
+11/18/2024
+Mike Merola and Miguel Romero
+"""
 from bot import Bot
 from machine import Pin
 import neopixel

@@ -1,3 +1,8 @@
+"""
+LineFollowing Logic  portion of the ECEG341 Robot Olympics
+11/18/2024
+Mike Merola and Miguel Romero
+"""
 from bot import Bot
 import time
 import machine
@@ -37,7 +42,7 @@ async def line_follow(b, ind, state, count, start_time, n, speed ):
         # state machine, wait for the line to be detected, then button press.
         # then go straight until either sensor is 1.
         line = b.read_line()
-        print(line)
+        # print(line)
         # print(f"Line Sensors: {line}, State : {state}"
         # print(b.A.value())
         if start_time is not None and time.ticks_diff(time.ticks_ms(), start_time) > 100000000000:
