@@ -32,10 +32,12 @@ def main():
 
 async def line_follow(b, ind, state, count, start_time, n, speed ):
     while True:
+
         
         # state machine, wait for the line to be detected, then button press.
         # then go straight until either sensor is 1.
         line = b.read_line()
+        print(line)
         # print(f"Line Sensors: {line}, State : {state}"
         # print(b.A.value())
         if start_time is not None and time.ticks_diff(time.ticks_ms(), start_time) > 100000000000:
@@ -62,7 +64,6 @@ async def line_follow(b, ind, state, count, start_time, n, speed ):
             elif b.A.value() == 0:
                 while b.A.value() == 0:
                     await asyncio.sleep(0.01)
-                count = 0
                 await asyncio.sleep(1)
                 state = 2
                 start_time = time.ticks_ms()
@@ -83,7 +84,7 @@ async def line_follow(b, ind, state, count, start_time, n, speed ):
             # go forward until we see the line again.
             # steer if one sensor is on the line.
             if line == (1,1):
-                b.turnleft()
+                b.fwd(speed)
             elif line == (1,0):
                 # steer left
                 b.turnleft(amount_u16=512)

@@ -39,7 +39,7 @@ async def meterDash():
     ind = Pin(0, Pin.OUT)
     n = neopixel.NeoPixel(Pin(18),32)
     # print("In meter Dash")
-    task2 = asyncio.create_task(line_follow(bot , ind , state, count, start_time, n, speed = 0.6))
+    task2 = asyncio.create_task(line_follow(bot , ind , state, count, start_time, n, speed = 0.65))
     task1 = asyncio.create_task(dash(bot , task2))
     await asyncio.gather(task1,task2)
             

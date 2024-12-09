@@ -124,7 +124,7 @@ async def light_show():
         n.write()
         await asyncio.sleep_ms(1000)
 
-async def main_function():
+async def breaking():
     asyncio.create_task(check_border())
     asyncio.create_task(light_show())
     asyncio.create_task(playsong(take_on_me)) 
@@ -133,10 +133,10 @@ async def main_function():
     #cycles the lights on the board
 
     start_time = time.ticks_ms()
-    while time.ticks_diff(time.ticks_ms(), start_time) < 30000:
+    while time.ticks_diff(time.ticks_ms(), start_time) < 15000:
         # playsong(take_on_me)
         await movement()
         await asyncio.sleep_ms(100)
     bot.stop()
 
-asyncio.run(main_function())
+asyncio.run(breaking())
