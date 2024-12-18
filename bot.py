@@ -110,48 +110,6 @@ class Bot:
         self.M1B.duty_u16(0)
         self.M2A.duty_u16(0)
         self.M2B.duty_u16(0)
-
-
-    # async def read_distance(self, timeout=100):
-    #     """Reads distance from an HC-SR04P distance sensor.
-        
-    #     2cm - 400cm range
-
-    #     Args:
-    #         trig_pin: The GPIO pin connected to the trigger pin of the sensor.
-    #         echo_pin: The GPIO pin connected to the echo pin of the sensor.
-    #         timeout: The maximum time (in milliseconds) to wait for a response from the sensor.
-
-    #     Returns:
-    #         The measured distance in centimeters, or None if no response was received within the timeout.
-            
-    #     Gemini
-    #     """
-
-    #     # Trigger the sensor
-    #     self.trig.value(0)
-    #     await asyncio.sleep(0.000002)
-    #     self.trig.value(1)
-    #     await asyncio.sleep(0.00001)
-    #     self.trig.value(0)
-
-    #     # Wait for the echo signal
-    #     start_time = time.ticks_ms()
-    #     while self.echo.value() == 0:
-    #         signaloff = time.ticks_ms()
-    #         if time.ticks_diff(signaloff, start_time) > timeout * 1000:
-    #             return None
-
-    #     start_time = time.ticks_ms()
-    #     while self.echo.value() == 1:
-    #         signalon = time.ticks_ms()
-    #         if time.ticks_diff(signalon, start_time) > timeout * 1000:
-    #             return None
-
-    #     # Calculate the distance
-    #     pulse_time = time.ticks_diff(signalon, signaloff)
-    #     distance = (pulse_time * 0.0343) / 2
-    #     return distance * 1000
     
     def read_distance(self, timeout=100):
         """Reads distance from an HC-SR04P distance sensor.

@@ -12,8 +12,19 @@ import neopixel
 from lineFollow import line_follow
 
 async def curling_logic(bot, n, task2):
+    """
+    Implements the logic for the robot to stop at a specific distance from the wall during
+    the Curling portion of the competition.
+
+    Parameters:
+        bot (Bot): An instance of the Bot class to control the robot.
+        n (NeoPixel): NeoPixel LED object used for visual feedback.
+        task2 (asyncio.Task): The `line_follow` task, which will be canceled when the robot
+                              reaches the target distance.
+                              """
+
     while True:
-        distance = await bot.read_distance()
+        distance = bot.read_distance()
         distance_to_wall = 45
         if distance is None:
             bot.brakes()
@@ -31,6 +42,9 @@ async def curling_logic(bot, n, task2):
         await asyncio.sleep(0.01)
 
 async def curling():
+    """
+    Initializes and runs the robot for the Curling portion of the ECEG341 Robot Olympics.
+     """
     conf ={
         "trig_pin" : 16,
         "echo_pin" : 17,
@@ -49,7 +63,7 @@ async def curling():
     start_time = None
     n = neopixel.NeoPixel(Pin(18),32)
     ind = Pin(0, Pin.OUT)
-    task2 = asyncio.create_task(line_follow(bot, ind , state, count ,start_time, n, speed = 0.9))
+    task2 = asyncio.create_task(line_follow(bot, ind , state, count ,start_time, n, speed_container= 0.9))
     task1 = asyncio.create_task(curling_logic(bot, n, task2))
     await asyncio.gather(task1,task2)
 

@@ -30,21 +30,30 @@ def main():
     count = 0
     start_time = None
     n = neopixel.NeoPixel(machine.Pin(18),32)
-
-    bot_brakes = False
-    line_follow(b, ind, state, count, start_time, n, speed = 0.3)
+    line_follow(b, ind, state, count, start_time, n, speed_container= 0.3)
 
 
 async def line_follow(b, ind, state, count, start_time, n, speed_container ):
+    """
+    Implements the state machine logic for the robot's line-following behavior.
+
+    Parameters:
+        b (Bot): An instance of the Bot class to control the robot.
+        ind (Pin): A GPIO pin used for signaling or feedback (e.g., toggling an LED).
+        state (int): The initial state of the state machine (default is 0).
+        count (int): A counter used to track events or iterations (initially 0).
+        start_time (int or None): Tracks the start time for timed operations (e.g., forward motion).
+        n (NeoPixel): NeoPixel LED object for visual feedback.
+        speed_container (list or float): The current speed for the robot. A mutable list 
+                                          or fixed value that influences the robot's movement.
+                                        """
     while True:
 
-        # print("started line follow ")
+    
         # state machine, wait for the line to be detected, then button press.
         # then go straight until either sensor is 1.
         line = b.read_line()
-        # print(line)
-        # print(f"Line Sensors: {line}, State : {state}"
-        # print(b.A.value())
+   
         if start_time is not None and time.ticks_diff(time.ticks_ms(), start_time) > 100000000000:
             b.stop()
             state = 0
@@ -102,31 +111,23 @@ async def line_follow(b, ind, state, count, start_time, n, speed_container ):
             raise(Exception(f"Invalid state ({state})"))
         await asyncio.sleep(0)
 
-# try:
-#     main()
-# except Exception as e:
-#     conf ={
-#         "trig_pin" : 16,
-#         "echo_pin" : 17,
-#         "M1A": 8,
-#         "M1B": 9,
-#         "M2A": 11,
-#         "M2B": 10,
-#         "left_sensor": 27,
-#         "right_sensor": 26,
-#         "A": 20,
-#         "B": 21
-#     }
-#     b = Bot(**conf)
-#     b.stop()
-#     raise(e)
-# # turn left, M1B drives the right wheel forward
-# b.M1A.duty_u16(0) 
-# b.M1B.duty_u16(0x4000)
-    
-#     # turn right, M2B drives the left wheel forward
-# b.M2A.duty_u16(0)
-# b.M2B.duty_u16(0x4000)
+try:
+    main()
+except Exception as e:
+    conf ={
+        "trig_pin" : 16,
+        "echo_pin" : 17,
+        "M1A": 8,
+        "M1B": 9,
+        "M2A": 11,
+        "M2B": 10,
+        "left_sensor": 27,
+        "right_sensor": 26,
+        "A": 20,
+        "B": 21
+    }
+    b = Bot(**conf)
+    b.stop()
+    raise(e)
 
-# time.sleep_ms(1000)
-# b.brake()
+    

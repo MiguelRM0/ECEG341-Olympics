@@ -1,3 +1,8 @@
+"""
+Meter Dash  portion of the ECEG341 Robot Olympics
+11/18/2024
+Mike Merola and Miguel Romero
+"""
 import asyncio
 from bot import Bot
 from machine import Pin
@@ -5,6 +10,16 @@ import neopixel
 from lineFollow import line_follow
 
 async def dash(bot, speed_container):
+    """
+    Continuously monitors the distance to obstacles using the bot's ultrasonic sensor
+    and adjusts the bot's speed accordingly.
+
+    Parameters:
+        bot (Bot): An instance of the Bot class to control the robot.
+        speed_container (list): A mutable list containing the current speed of the robot.
+                                The speed is adjusted based on the distance readings.
+    """
+
     while True:
         distance = bot.read_distance()
         # print(distance)
@@ -14,12 +29,23 @@ async def dash(bot, speed_container):
             continue
         if distance < 10:
             # bot.stop()
-            speed_container[0] = 0  # Set speed to 0 to stop the bot
+            speed_container[0] = 0
         elif distance >= 10:
-            speed_container[0] = 0.65
+            speed_container[0] = 0.7
         await asyncio.sleep(0.01)
 
 async def meterDash():
+    """
+    Initializes the robot's configuration, sets up tasks for line-following and
+    obstacle detection, and manages the robot's participation in the Meter Dash challenge.
+
+     Behavior:
+        - Configures the bot's hardware, including motor control pins, sensors, and LEDs.
+        - Creates and runs two asynchronous tasks:
+            1. `line_follow`: Handles the line-following behavior of the robot.
+            2. `dash`: Monitors the distance to obstacles and adjusts the speed.
+        - Ensures both tasks run concurrently using `asyncio.gather`.
+     """
     conf = {
         "trig_pin": 16,
         "echo_pin": 17,
@@ -40,10 +66,8 @@ async def meterDash():
     ind = Pin(0, Pin.OUT)
     n = neopixel.NeoPixel(Pin(18), 32)
 
-    # Use a mutable container for speed
-    speed_container = [0.65]  # Initial speed
+    speed_container = [0.7]  # Initial speed
 
-    # Start tasks with shared speed_container
     task2 = asyncio.create_task(line_follow(bot, ind, state, count, start_time, n, speed_container))
     task1 = asyncio.create_task(dash(bot, speed_container))
 
