@@ -28,8 +28,8 @@ tones = {
 "AS7": 3729,"B7": 3951,"C8": 4186,"CS8": 4435,"D8": 4699,"DS8": 4978
 }
 
-#Take on me by A-ha 
-take_on_me = [
+#Simple song to play while the bot is moving
+song = [
     "E5", "E5", "E5", "P", "E5", "G5", "A5", "A5", "A5", "E5", "G5", "A5", "P",
     "E5", "G5", "A5", "A5", "A5", "G5", "P", "E5", "G5", "A5", "P", "E5", "G5", "A5",
     "E5", "G5", "A5", "A5", "A5", "G5", "P", "E5", "G5", "A5", "P", "E5", "G5", "A5",
@@ -52,7 +52,6 @@ async def playsong(mysong):
         await asyncio.sleep_ms(225)
     bequiet()
 
-
 global bot
 conf ={
     "trig_pin" : 16,
@@ -68,6 +67,7 @@ conf ={
 }
 bot = Bot(**conf)
 
+#sets up neopixel to be used with the lights on the microprocessor
 p = Pin(18)
 n = neopixel.NeoPixel(p,32)
 
@@ -85,36 +85,33 @@ def get_type_ground2():
     
 #checks to make sure the bot hasn't detected the border
 async def check_border():
-    print("in check_border")
     while True:
         if (get_type_ground1() == 1 or get_type_ground2() == 1):
             await adjust_position()
         await asyncio.sleep_ms(100)
 
+#the main routine for the bot
 async def movement():
-    # print("in movement")
     bot.fwd(speed = .5)
     await asyncio.sleep_ms(100)
     bot.rightRotate(speed =.3)
+    #usess a random time to rotate in order to make the routine different each time
     time = random.randint(200, 3000) 
-    # print(time)
     await asyncio.sleep_ms(time)
     bot.leftRotate(speed = .5)
     time2 = random.randint(200, 3000) 
-    # print(time2)
     await asyncio.sleep_ms(time2)
     
 async def adjust_position():
-    # print("in adjust position")
     #if the bot is too close to the edge it should then reverse and rotate left to face a new direction
     bot.reverse()
     await asyncio.sleep_ms(1000)
     bot.leftRotate()
     time = random.randint(200, 3000) 
-    # print(time)
     await asyncio.sleep_ms(time)
 
 async def light_show():
+    #changes the RGB value of the lights every second
     while True:
         rand1 = random.randint(0, 255)
         rand2 = random.randint(0, 255)
@@ -127,14 +124,11 @@ async def light_show():
 async def breaking():
     asyncio.create_task(check_border())
     asyncio.create_task(light_show())
-    asyncio.create_task(playsong(take_on_me)) 
-    #plays the song
-    
-    #cycles the lights on the board
+    asyncio.create_task(playsong(song)) 
 
     start_time = time.ticks_ms()
+    #The bot does the routine for 15 seconds then does it again to reach the 30 second limit
     while time.ticks_diff(time.ticks_ms(), start_time) < 15000:
-        # playsong(take_on_me)
         await movement()
         await asyncio.sleep_ms(100)
     bot.stop()
