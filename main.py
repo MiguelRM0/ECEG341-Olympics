@@ -4,14 +4,14 @@ Main of the ECEG341 Robot Olympics
 Mike Merola and Miguel Romero
 """
 
-# import asyncio
+import asyncio
 # from meterDash import meterDash
 
 # from marathon import marathon
 
 # from curling import curling 
 
-# from breaking import breaking
+from breaking import breaking
 
 
 # if __name__ == "__main__":
@@ -26,5 +26,5 @@ Mike Merola and Miguel Romero
 
 
 
-# if __name__ == "__main__":
-#     asyncio.run(breaking())
+if __name__ == "__main__":
+    asyncio.run(breaking())

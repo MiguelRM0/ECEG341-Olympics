@@ -63,8 +63,10 @@ async def curling():
     start_time = None
     n = neopixel.NeoPixel(Pin(18),32)
     ind = Pin(0, Pin.OUT)
-    task2 = asyncio.create_task(line_follow(bot, ind , state, count ,start_time, n, speed_container= 0.9))
-    task1 = asyncio.create_task(curling_logic(bot, n, task2))
+
+    speed_container = [0.9]
+    task2 = asyncio.create_task(line_follow(bot, ind , state, count ,start_time, n, speed_container))
+    task1 = asyncio.create_task(curling_logic(bot, n, task2 ))
     await asyncio.gather(task1,task2)
 
 

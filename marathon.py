@@ -39,7 +39,8 @@ async def marathon():
     ind = Pin(0, Pin.OUT)
     n = neopixel.NeoPixel(Pin(18),32)
     # print("In meter Dash")
-    task2 = asyncio.create_task(line_follow(bot , ind , state, count, start_time, n, speed_container= 0.38))
+    speed_container =[0.38]
+    task2 = asyncio.create_task(line_follow(bot , ind , state, count, start_time, n, speed_container))
     await asyncio.gather(task2)
             
 asyncio.run(marathon())
